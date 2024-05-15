@@ -161,7 +161,7 @@ export default () => {
         },
       })
     } catch (error) {
-      console.log(`error: ${error}`);
+      console.log(`error: ${JSON.stringify(error)}`, error);
       chrome.runtime.sendMessage({
         type: `TRANSACTION_ID:${dappToken}`,
         message: {

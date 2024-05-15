@@ -6,6 +6,7 @@ import {
   evaluateTransaction,
   evaluateBalance,
   submitTransaction,
+  Network,
 } from "test-kalp-wallet-package";
 
 export default () => {
@@ -45,7 +46,8 @@ export default () => {
     const setringData = async (
       channelName1,
       chainCodeName1,
-      transactionNameBalance
+      transactionNameBalance,
+      transactionParams
     ) => {
       try {
         const enrollmentID = localStorage.getItem("enrollmentId");
@@ -54,13 +56,14 @@ export default () => {
         // const channelName1 = "kalp";
         // const chainCodeName1 = "kalpacc";
         // const transactionNameBalance = "GetBalanceForAccount";
-        const transactionParamsBalance = [enrollmentID];
+        const transactionParamsBalance = transactionParams;
         console.log(
           `Desired value in : ${
             (channelName1, chainCodeName1, transactionNameBalance)
           }`
         );
-        const balance1 = await evaluateBalance(
+        const balance1 = await evaluateTransaction(
+          Network.Stagenet,
           enrollmentID,
           privateKeyString,
           cert,
@@ -69,7 +72,7 @@ export default () => {
           transactionNameBalance,
           transactionParamsBalance
         );
-        console.log(`evaluateTransactionBalance is:${balance1}`);
+        console.log(`evaluateTransactionBalance is:${balance1}`, balance1);
         return balance1;
       } catch (error) {
         console.log(error.message);
@@ -81,37 +84,35 @@ export default () => {
       handleCreateAsset();
   
       chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        console.log(`Message is ${message.type}`);
-        if (message.type === "READ_TRANSACTION") {
-          console.log(`Listening to READ_TRANSACTION`);
-  
-          // Extract transactionType from message.content
+        console.log(`Message is `, message);
+        if (message.type === `READ_TRANSACTION_BACKGROUND:${message.content.dappToken}`) {
+          console.log(`Listening to READ_TRANSACTION_BACKGROUND`);
           let transactionType = message.content;
-          console.log(`TransactionType: ${JSON.stringify(transactionType)}`);
+          console.log(`TransactionType: ${JSON.stringify(transactionType)}`, transactionType.methodArgs[0]);
   
           // Extract the first element from methodArgs array
-          const channelName1 = transactionType.methodArgs[1];
-          const chainCodeName1 = transactionType.methodArgs[2];
-          const transactionNameBalance = transactionType.methodArgs[3];
+          const channelName1 = transactionType.methodArgs[0];
+          const chainCodeName1 = transactionType.methodArgs[1];
+          const transactionNameBalance = transactionType.methodArgs[2];
+          const transactionParams = transactionType.methodArgs[3];
           // Log the desired value to the console
           console.log(
-            `Desired value: ${
-              (channelName1, chainCodeName1, transactionNameBalance)
-            }`
+            `Desired value:`,
+              channelName1, chainCodeName1, transactionNameBalance, transactionParams
+            
           );
   
           async function run() {
             const balance = await setringData(
               channelName1,
               chainCodeName1,
-              transactionNameBalance
+              transactionNameBalance,
+              transactionParams
             );
             console.log(`setringData :${balance}`);
             sendResponse?.(balance);
           }
           run();
-          // sendResponse?.("1000");
-          // Return true to indicate an asynchronous response
           return true;
         } else if (message.type === "WRITE_TRANSACTION") {
           navigate("/Asset");

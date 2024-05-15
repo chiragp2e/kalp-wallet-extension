@@ -5696,10 +5696,10 @@
     "source-map" "~0.6.1"
     "source-map-support" "~0.5.12"
 
-"test-kalp-wallet-package@^1.0.55":
-  "integrity" "sha512-+0yKNAwzuajoT9/C29pSmNXqZ4xodEY3OfmpU9z13cbx2nXJAXqzZgbcht19FjyA5uK12Wo8Nj2Rqq+ee6S8uw=="
-  "resolved" "https://registry.npmjs.org/test-kalp-wallet-package/-/test-kalp-wallet-package-1.0.55.tgz"
-  "version" "1.0.55"
+"test-kalp-wallet-package@^1.0.57":
+  "integrity" "sha512-JvLnjZJx5ZhdinaOvukA89RmkErlIGF7ez3OoAeseC60zx3noOw1B3oPDZpxhLG2cWqRdTUfR8EYwMjyLqtT6g=="
+  "resolved" "https://registry.npmjs.org/test-kalp-wallet-package/-/test-kalp-wallet-package-1.0.57.tgz"
+  "version" "1.0.57"
   dependencies:
     "buffer" "^6.0.3"
     "crypto-browserify" "^3.12.0"

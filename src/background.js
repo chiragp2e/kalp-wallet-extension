@@ -29,7 +29,7 @@ function Popup(message) {
     console.log(`val is: `, message);
     if (message.methodName === "connectToWallet") {
       homePageURL = chrome.runtime.getURL("popup.html");
-    } else if (message.methodName === "HomePage") {
+    } else if (message.methodName === "readTransaction") {
       homePageURL = chrome.runtime.getURL("popup.html#/HomePage");
     } else if (message.methodName === "submitTransaction") {
       if (walletExtensionWindow === null) {
@@ -197,12 +197,62 @@ console.log(channelName, chainCodeName, transactionNameBalance, transactionParam
   }
 }
 
+function ReadTransaction(message) {
+  console.log("bg js read transaction")
+  const dappToken = message.dappToken;
+  let transactionType = message;
+  const channelName = transactionType.methodArgs[1];
+  const chainCodeName = transactionType.methodArgs[2];
+  const transactionNameBalance = transactionType.methodArgs[3];
+  const transactionParams = transactionType.methodArgs[4];
+  const methodArgs = [
+  channelName,
+  chainCodeName,
+  transactionNameBalance,
+  transactionParams,
+  ];
+
+  console.log("bg js read transaction content", message, methodArgs)
+
+  chrome.runtime.sendMessage(
+    {
+      type: `READ_TRANSACTION_BACKGROUND:${dappToken}`,
+      content: {
+        methodArgs,
+        dappToken,
+      },
+    },
+    (response) => {
+      if (chrome.runtime.lastError) {
+        console.error(
+          "Error sending message:",
+          chrome.runtime.lastError.message
+        );
+      } else {
+        console.log(
+          "Received response from homepage to background script:",
+          response
+        );
+        chrome.tabs.query({}, (tabs) => {
+          tabs.forEach((tab) => {
+            chrome.tabs.sendMessage(tab.id, {
+              type: `READ_FROM_BACKGROUND_JS:${dappToken}`,
+              message: response,
+            });
+          });
+        });
+      }
+    }
+  );
+}
+
 const kalpWallet = createKalpWallet(
   {
     Popup: Popup,
     ConnectToWallet: ConnectToWallet,
     GetEnrollmentId: GetEnrollmentId,
-    SubmitTransaction: SubmitTransaction
+    SubmitTransaction: SubmitTransaction,
+    ReadTransaction: ReadTransaction
   });
 
 connectToWalletBackgroundListner(kalpWallet);
