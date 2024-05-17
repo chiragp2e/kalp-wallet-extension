@@ -26,6 +26,8 @@ export default () => {
       permission: "YES"
       },
     })
+
+    localStorage.setItem(`${dappName}_token`, a[5])
         navigate("/HomePage");
 
     

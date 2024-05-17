@@ -11,7 +11,6 @@ console.log("walletExtensionWindow ConnectToWallet", walletExtensionWindow)
   } else {
     const ispopup = Popup(message);
     if (ispopup) {
-      // TODO: figure it out complete with component
       GetUserPermission(message);
     }
   }
@@ -58,8 +57,6 @@ function Popup(message) {
             walletExtensionWindow &&
             closedWindowId === walletExtensionWindow.id
           ) {
-console.log("walletExtensionWindow popup", walletExtensionWindow)
-
             walletExtensionWindow = null;
           }
         });
@@ -246,13 +243,23 @@ function ReadTransaction(message) {
   );
 }
 
+function DisconnectWallet (dappName) {
+  console.log("hello discoo")
+  let token = localStorage.getItem(`${dappName}_token`)
+  console.log("token disconnect", token)
+  localStorage.removeItem(`${dappName}_token`)
+
+  return true
+}
+
 const kalpWallet = createKalpWallet(
   {
     Popup: Popup,
     ConnectToWallet: ConnectToWallet,
     GetEnrollmentId: GetEnrollmentId,
     SubmitTransaction: SubmitTransaction,
-    ReadTransaction: ReadTransaction
+    ReadTransaction: ReadTransaction,
+    DisconnectWallet: DisconnectWallet
   });
 
 connectToWalletBackgroundListner(kalpWallet);

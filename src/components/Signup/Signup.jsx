@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 import {
   Network,
-  register,
+  registerAndEnrollUser,
   createCsr,
   getEnrollmentId,
   getKeyPair,
@@ -52,8 +52,8 @@ export default () => {
       const enrollmentID = localStorage.getItem("enrollmentId");
       const createCSRKey = localStorage.getItem("csr");
       console.log(`enrollment id is :${enrollmentID} and csr:${createCSRKey}`);
-      const certificate = await register(Network.Stagenet, enrollmentID, createCSRKey);
-      console.log(`register data :${certificate}`);
+      const certificate = await registerAndEnrollUser(Network.Stagenet, enrollmentID, createCSRKey);
+      console.log(`registerAndEnrollUser data :${certificate}`);
       localStorage.setItem("cert", certificate);
       navigate("/Homepage");
     } catch (error) {
