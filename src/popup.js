@@ -7,7 +7,7 @@ import Example from 'components/Example';
 import defaultTheme from 'themes/default';
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import NoteState from "./context/NoteState";
-import Signup from "components/Signup";
+import Signup from "./components/Signup";
 
 import Asset from "./components/Asset";
 import Login from "./components/Login";

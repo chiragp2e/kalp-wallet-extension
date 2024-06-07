@@ -1,5 +1,5 @@
 
-import {createKalpWallet, connectToWalletBackgroundListner} from "kalp-wallet-pkg";
+import {createKalpWallet, connectToWalletBackgroundListener} from "kalp-wallet-extension-pkg";
 let walletExtensionWindow = null;
 
 console.log("walletExtensionWindow", walletExtensionWindow)
@@ -73,6 +73,11 @@ var dappToken = message.dappToken;
   var methodArgs = message.methodArgs;
   var methodCallId = message.methodCallId;
   var methodName = message.methodName;
+  console.log("sign up note", dappToken,
+  dappName,
+  methodArgs,
+ methodCallId,
+ methodName)
 setTimeout(() => {
   chrome.runtime.sendMessage({
       type: "SEND_TO_NOTE_CONTEXT",
@@ -262,7 +267,9 @@ const kalpWallet = createKalpWallet(
     DisconnectWallet: DisconnectWallet
   });
 
-connectToWalletBackgroundListner(kalpWallet);
+  console.log("hello signup background js 122")
+
+connectToWalletBackgroundListener(kalpWallet);
 
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {

@@ -7,7 +7,7 @@ import {
   registerAndEnrollUser,
   createCsr,
   getEnrollmentId,
-  getKeyPair,
+  getKeyPairFromSeedPhrase,
   getSeedPhrase,
 } from "test-kalp-wallet-package";
 
@@ -21,7 +21,7 @@ export default () => {
   async function keyPair() {
     const seed = await getSeedPhrase();
     console.log(`seed is ${seed}`);
-    const { pemPublicKey, pemPrivateKey } = await getKeyPair(seed);
+    const { pemPublicKey, pemPrivateKey } = await getKeyPairFromSeedPhrase(seed);
     console.log(`public is ${pemPublicKey}`);
     console.log(`private is ${pemPrivateKey}`);
     const enrollmentID = await getEnrollmentId(pemPublicKey);
@@ -55,7 +55,7 @@ export default () => {
       const certificate = await registerAndEnrollUser(Network.Stagenet, enrollmentID, createCSRKey);
       console.log(`registerAndEnrollUser data :${certificate}`);
       localStorage.setItem("cert", certificate);
-      navigate("/Homepage");
+      navigate("/Permission");
     } catch (error) {
       throw Error(error);
     }

@@ -1,8 +1,8 @@
-const HTMLPlugin = require('html-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const path = require('path');
-const ExtensionReloader = require('webpack-extension-reloader');
-const ManifestVersionSyncPlugin = require('webpack-manifest-version-sync-plugin');
+import HTMLPlugin from 'html-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import path from 'path';
+import ExtensionReloader from 'webpack-extension-reloader';
+import ManifestVersionSyncPlugin from 'webpack-manifest-version-sync-plugin';
 
 module.exports = {
   entry: {
@@ -16,7 +16,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.css'],
+    extensions: ['.js', '.jsx', '.ts'],
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     alias: {
       react: 'preact/compat',
@@ -26,7 +26,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.js|\.ts|\.jsx$/,
         exclude: /node_modules/,
         use: [
           {

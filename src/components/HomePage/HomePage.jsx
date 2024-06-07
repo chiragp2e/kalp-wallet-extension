@@ -1,6 +1,8 @@
 /* global chrome */
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Button from '@mui/material/Button';
+
 // import "../../css/HomePage.css";
 import {
   evaluateTransaction,
@@ -164,6 +166,10 @@ export default () => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     };
+
+    const signOut = () => {
+
+    }
   
     //<button type="button" className="btn btn-outline-success ml-2" onClick={createKey} style={{ margin: '20px  7rem' }}>Enter Key</button>
     return (
@@ -190,6 +196,13 @@ export default () => {
           style={{ position: "absolute", top: "10px", right: "10px" }}
         >
           Export Data
+        </button>
+
+        <button
+          onClick={signOut}
+          style={{ position: "absolute", top: "10px", right: "10px" }}
+        >
+          Sign Out
         </button>
         <div
           style={{
