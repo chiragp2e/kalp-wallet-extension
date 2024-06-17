@@ -4766,7 +4766,17 @@
     "ts-loader" "^9.5.1"
     "tsup" "^8.1.0"
     "typescript" "^5.4.5"
-    "uuid" "^9.0.1"
+
+"kalp-wallet@^0.0.5":
+  "integrity" "sha512-8svuwYYM/HxJgJIYVWc642FWN9pxeTH0aqzAjIyKn843oHSAua7SA84nfzK5AoGwf78Ttr5sYJH8/abAAF461Q=="
+  "resolved" "https://registry.npmjs.org/kalp-wallet/-/kalp-wallet-0.0.5.tgz"
+  "version" "0.0.5"
+  dependencies:
+    "buffer" "^6.0.3"
+    "crypto-browserify" "^3.12.0"
+    "elliptic" "^6.5.5"
+    "ethers" "^5.6.4"
+    "jsrsasign" "^11.1.0"
 
 "kind-of@^2.0.1":
   "integrity" "sha1-AY7HpM5+OobLkUG+UZ0kyPqpgbU= sha512-0u8i1NZ/mg0b+W3MGGw5I7+6Eib2nx72S/QvXa0hYjEkjTknYmEYQJwGu3mLC0BrhtJjtQafTkyRUQ75Kx0LVg=="
@@ -6780,10 +6790,10 @@
     "source-map" "~0.6.1"
     "source-map-support" "~0.5.12"
 
-"test-kalp-wallet-package@^1.0.65":
-  "integrity" "sha512-48wKlP3qqo5sx1zcXhCc15Y4UL0tNsdus9Z8PF7fU5SekpVkM+VoRSrmRuRUfwQcrSKoVOHUVPAhO42WkL+nXg=="
-  "resolved" "https://registry.npmjs.org/test-kalp-wallet-package/-/test-kalp-wallet-package-1.0.65.tgz"
-  "version" "1.0.65"
+"test-kalp-wallet-package@^1.0.67":
+  "integrity" "sha512-ol4TEjcLfrAswkJhUK08d/RjAP1EjqPaQXt65gHDcaSAzZhaLC0i3Inj0deFDmzFDxuipmGlWl1X3gL8hqisOg=="
+  "resolved" "https://registry.npmjs.org/test-kalp-wallet-package/-/test-kalp-wallet-package-1.0.67.tgz"
+  "version" "1.0.67"
   dependencies:
     "buffer" "^6.0.3"
     "crypto-browserify" "^3.12.0"

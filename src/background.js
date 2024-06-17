@@ -30,7 +30,7 @@ function Popup(message) {
       homePageURL = chrome.runtime.getURL("popup.html");
     } else if (message.methodName === "readTransaction") {
       homePageURL = chrome.runtime.getURL("popup.html#/HomePage");
-    } else if (message.methodName === "submitTransaction") {
+    } else if (message.methodName === "writeTransaction") {
       if (walletExtensionWindow === null) {
         homePageURL = chrome.runtime.getURL("popup.html#/TransLogin");
       } else {
@@ -120,10 +120,10 @@ function SubmitTransaction(message) {
   
   const dappToken = message.dappToken;
   let transactionType = message;
-  const channelName = transactionType.methodArgs[1];
-  const chainCodeName = transactionType.methodArgs[2];
-  const transactionNameBalance = transactionType.methodArgs[3];
-  const transactionParams = transactionType.methodArgs[4];
+  const channelName = transactionType.methodArgs[0];
+  const chainCodeName = transactionType.methodArgs[1];
+  const transactionNameBalance = transactionType.methodArgs[2];
+  const transactionParams = transactionType.methodArgs[3];
   const methodArgs = [
   channelName,
   chainCodeName,
