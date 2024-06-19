@@ -11,7 +11,7 @@ import {
   getSeedPhrase,
 } from "test-kalp-wallet-package";
 
-export default () => {
+const Example = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -27,10 +27,6 @@ export default () => {
     const enrollmentID = await getEnrollmentId(pemPublicKey);
     console.log("EnrollmentId:", enrollmentID);
     const createCSRKey = createCsr(enrollmentID, pemPrivateKey, pemPublicKey);
-    //const getRegister = await register(enrollmentID, createCSRKey);
-
-    //console.log(`pubcert : ${getRegister}`);
-
     localStorage.setItem("enrollmentId", enrollmentID);
     localStorage.setItem("csr", createCSRKey);
     localStorage.setItem("privateKey", pemPrivateKey);
@@ -41,7 +37,6 @@ export default () => {
     console.log("csr:", createCSRKey);
   }
 
-  
   const callAPI = async () => {
     try {
       await keyPair();
@@ -113,48 +108,99 @@ export default () => {
     setConfirmPassword(event.target.value);
   };
 
+  const containerStyle = {
+    backgroundColor: '#f8f9fa',
+    padding: '21px',
+    borderRadius: '8px',
+    boxShadow: '0 0 10px rgba(0,0,0,.1)',
+    maxWidth: '500px',
+    margin: '0 auto',
+    marginTop: '36px',
+    textAlign: 'center',
+    position: 'relative',
+    left: '1rem',
+    height: '21rem',
+    width: '15rem',
+  };
+
+  const formGroupStyle = {
+    marginBottom: '20px',
+  };
+
+  const formLabelStyle = {
+    display: 'block',
+    marginBottom: '5px',
+    color: '#777',
+  };
+
+  const formControlStyle = {
+    width: '100%',
+    padding: '8px',
+    boxSizing: 'border-box',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+  };
+
+  const buttonStyle = {
+    padding: '10px 20px',
+    backgroundColor: '#3498dbd0',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    margin: '10px 0',
+  };
+
+  const errorStyle = {
+    color: '#c0392b',
+    marginTop: '10px',
+  };
+
   return (
-      <div className="mb-3">
-        <h1>Sign up</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword2" className="form-label">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="exampleInputPassword2"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-              required
-            />
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-          {errorMessage &&
-            errorMessage.split("\n").map((error, index) => (
-              <p key={index} className="error">
-                {error}
-              </p>
-            ))}
-        </form>
-      </div>
+    <div style={containerStyle}>
+      <h1>Sign up</h1>
+      <form onSubmit={handleSubmit}>
+        <div style={formGroupStyle}>
+          <label htmlFor="exampleInputPassword1" style={formLabelStyle}>
+            Password
+          </label>
+          <input
+            type="password"
+            style={formControlStyle}
+            id="exampleInputPassword1"
+            value={password}
+            onChange={handlePasswordChange}
+            required
+          />
+        </div>
+        <div style={formGroupStyle}>
+          <label htmlFor="exampleInputPassword2" style={formLabelStyle}>
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            style={formControlStyle}
+            id="exampleInputPassword2"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+            required
+          />
+        </div>
+        <div className="d-flex justify-content-center align-items-center">
+          <button type="submit" style={buttonStyle}>
+            Submit
+          </button>
+        </div>
+        {errorMessage &&
+          errorMessage.split("\n").map((error, index) => (
+            <p key={index} style={errorStyle}>
+              {error}
+            </p>
+          ))}
+      </form>
+    </div>
   );
 }
+
+export default Example;

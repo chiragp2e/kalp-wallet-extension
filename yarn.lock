@@ -4760,12 +4760,6 @@
 "kalp-wallet-extension-pkg@file:../../kalp-wallet-extension":
   "resolved" "file:../../kalp-wallet-extension"
   "version" "1.0.0"
-  dependencies:
-    "@types/chrome" "^0.0.268"
-    "@types/uuid" "^9.0.8"
-    "ts-loader" "^9.5.1"
-    "tsup" "^8.1.0"
-    "typescript" "^5.4.5"
 
 "kalp-wallet@^0.0.5":
   "integrity" "sha512-8svuwYYM/HxJgJIYVWc642FWN9pxeTH0aqzAjIyKn843oHSAua7SA84nfzK5AoGwf78Ttr5sYJH8/abAAF461Q=="
