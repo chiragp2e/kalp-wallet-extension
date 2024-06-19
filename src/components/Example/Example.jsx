@@ -61,6 +61,14 @@ const Example = () => {
     left: '5rem',
   };
   const heading1 = {
+    padding: '10px 20px',
+    backgroundColor: '#3498dbd0',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    margin: '10px 0',
     position: 'relative',
     top: '6rem',
     left: '5rem',

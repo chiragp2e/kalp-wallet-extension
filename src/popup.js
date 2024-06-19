@@ -18,7 +18,7 @@ import TransactionLogin from './components/TransactionLogin';
 const Popup = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box width="200px" padding={3}>
+      <div width="200px" padding={3}>
         
         <NoteState>
         <Router>
@@ -35,7 +35,7 @@ const Popup = () => {
           </Routes>
         </Router>
       </NoteState>
-      </Box>
+      </div>
     </ThemeProvider>
   );
 };

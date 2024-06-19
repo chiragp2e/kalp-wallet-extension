@@ -1,4 +1,4 @@
-import { createKalpWallet, connectToWalletBackgroundListner } from 'kalp-wallet-extension-pkg';
+import { createKalpWallet, connectToWalletBackgroundListener } from 'kalp-wallet-extension-pkg';
 let walletExtensionWindow = null;
 
 console.log('walletExtensionWindow', walletExtensionWindow);
@@ -184,11 +184,16 @@ function ReadTransaction(message) {
   console.log('bg js read transaction');
   const dappToken = message.dappToken;
   let transactionType = message;
-  const channelName = transactionType.methodArgs[1];
-  const chainCodeName = transactionType.methodArgs[2];
-  const transactionNameBalance = transactionType.methodArgs[3];
-  const transactionParams = transactionType.methodArgs[4];
-  const methodArgs = [channelName, chainCodeName, transactionNameBalance, transactionParams];
+  const channelName = transactionType.methodArgs[0];
+  const chainCodeName = transactionType.methodArgs[1];
+  const transactionNameBalance = transactionType.methodArgs[2];
+  const transactionParams = transactionType.methodArgs[3];
+  const methodArgs = [
+  channelName,
+  chainCodeName,
+  transactionNameBalance,
+  transactionParams,
+  ];
 
   console.log('bg js read transaction content', message, methodArgs);
 
@@ -227,18 +232,21 @@ function DisconnectWallet(dappName) {
   return true;
 }
 
-const kalpWallet = createKalpWallet({
-  Popup: Popup,
-  ConnectToWallet: ConnectToWallet,
-  GetEnrollmentId: GetEnrollmentId,
-  SubmitTransaction: SubmitTransaction,
-  ReadTransaction: ReadTransaction,
-  DisconnectWallet: DisconnectWallet,
-});
+const kalpWallet = createKalpWallet(
+  {
+    Popup: Popup,
+    ConnectToWallet: ConnectToWallet,
+    GetEnrollmentId: GetEnrollmentId,
+    WriteTransaction: SubmitTransaction,
+    ReadTransaction: ReadTransaction,
+    DisconnectWallet: DisconnectWallet
+  });
+
+  console.log("hello signup background js 122")
 
 console.log('hello signup background js 122');
 
-connectToWalletBackgroundListner(kalpWallet);
+connectToWalletBackgroundListener(kalpWallet);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'getGlobalObject') {
