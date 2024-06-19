@@ -86,7 +86,7 @@ export default () => {
       handleCreateAsset();
   
       chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        console.log(`Message is `, message);
+        console.log(`Message is 12311331`, message);
         if (message.type === `READ_TRANSACTION_BACKGROUND:${message.content.dappToken}`) {
           console.log(`Listening to READ_TRANSACTION_BACKGROUND`);
           let transactionType = message.content;

@@ -2,10 +2,11 @@
 import styled from 'styled-components';
 import Box from 'components/Box';
 import Logo from 'assets/icons/logo.svg';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {Input, Flex, Button} from 'antd'
 
 const Example = styled.div`
   color: ${props => props.theme.palette.primary};
@@ -37,13 +38,14 @@ export default () => {
     };
 
   return (
-    <Example>
-  <Box display="flex" flexDirection="column" alignItems="center">
+    <Example >
+
     <div>
-      <Logo width="50px" height="50px" />
-      {greeting}
+      
     </div>
-    <div className="my-2 m-3">
+    <Flex vertical gap="middle" align='center'>
+
+    {/* <div className="my-2 m-3"> */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <Button variant="contained" className="btn btn-primary mb-2" onClick={createAccount}>
         Create new Wallet
@@ -51,8 +53,8 @@ export default () => {
       <Button variant="contained" className="btn btn-primary mb-2" onClick={importSeedPhrase}>
         Import existing wallet
       </Button>
-    </div>
-  </Box>
+    {/* </div> */}
+    </Flex>
 </Example>
 
   );
