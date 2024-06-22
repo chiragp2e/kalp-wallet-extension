@@ -1,7 +1,7 @@
 /* global chrome */
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import bcrypt from "bcryptjs";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import bcrypt from 'bcryptjs';
 import {
   Network,
   registerAndEnrollUser,
@@ -9,32 +9,27 @@ import {
   getEnrollmentId,
   getKeyPairFromSeedPhrase,
   getSeedPhrase,
-} from "test-kalp-wallet-package";
+} from 'test-kalp-wallet-package';
 
 const Example = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const saltRounds = 10;
 
   async function keyPair() {
-    const seed = await getSeedPhrase();
-    console.log(`seed is ${seed}`);
-    const { pemPublicKey, pemPrivateKey } = await getKeyPairFromSeedPhrase(seed);
-    console.log(`public is ${pemPublicKey}`);
-    console.log(`private is ${pemPrivateKey}`);
+    const pemPrivateKey = localStorage.getItem('privateKey');
+    const pemPublicKey = localStorage.getItem('publicKey');
     const enrollmentID = await getEnrollmentId(pemPublicKey);
-    console.log("EnrollmentId:", enrollmentID);
+    console.log('EnrollmentId:', enrollmentID);
     const createCSRKey = createCsr(enrollmentID, pemPrivateKey, pemPublicKey);
-    localStorage.setItem("enrollmentId", enrollmentID);
-    localStorage.setItem("csr", createCSRKey);
-    localStorage.setItem("privateKey", pemPrivateKey);
-    localStorage.setItem("publicKey", pemPublicKey);
-    console.log("Public Key in PEM format:", pemPublicKey);
-    console.log("Private Key in PEM format:", pemPrivateKey);
-    console.log("Enrollment Id:", enrollmentID);
-    console.log("csr:", createCSRKey);
+    localStorage.setItem('enrollmentId', enrollmentID);
+    localStorage.setItem('csr', createCSRKey);
+    console.log('Public Key in PEM format:', pemPublicKey);
+    console.log('Private Key in PEM format:', pemPrivateKey);
+    console.log('Enrollment Id:', enrollmentID);
+    console.log('csr:', createCSRKey);
   }
 
   const callAPI = async () => {
@@ -43,68 +38,67 @@ const Example = () => {
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(password, salt);
       console.log(`final encrypt password is :${hashedPassword}`);
-      localStorage.setItem("password", hashedPassword);
-      const enrollmentID = localStorage.getItem("enrollmentId");
-      const createCSRKey = localStorage.getItem("csr");
+      localStorage.setItem('password', hashedPassword);
+      const enrollmentID = localStorage.getItem('enrollmentId');
+      const createCSRKey = localStorage.getItem('csr');
       console.log(`enrollment id is :${enrollmentID} and csr:${createCSRKey}`);
       const certificate = await registerAndEnrollUser(Network.Stagenet, enrollmentID, createCSRKey);
       console.log(`registerAndEnrollUser data :${certificate}`);
-      localStorage.setItem("cert", certificate);
-      navigate("/Permission");
+      localStorage.setItem('cert', certificate);
+      navigate('/Permission');
     } catch (error) {
       throw Error(error);
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
 
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
 
     if (!password.trim()) {
-      setErrorMessage("Please enter a password.");
+      setErrorMessage('Please enter a password.');
       return;
     }
 
     if (password.length < 8) {
-      setErrorMessage("Password must be at least 8 characters long.");
+      setErrorMessage('Password must be at least 8 characters long.');
       return;
     }
 
     if (!password.match(passwordRegex)) {
       setErrorMessage(
-        "Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character."
+        'Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character.'
       );
       return;
     }
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match");
+      setErrorMessage('Passwords do not match');
       return;
     } else {
-      if (localStorage.getItem("publicCertificate")) {
-        console.log("right inside");
+      if (localStorage.getItem('cert')) {
+        console.log('right inside');
         async function createPassword() {
           const salt = await bcrypt.genSalt(saltRounds);
           const hashedPassword = await bcrypt.hash(password, salt);
           console.log(`final encrypt password is :${hashedPassword}`);
-          localStorage.setItem("Password", hashedPassword);
-          navigate("/Login");
+          localStorage.setItem('password', hashedPassword);
+          navigate('/HomePage');
         }
         createPassword();
       } else {
-        console.log("example usage call");
+        console.log('example usage call');
         callAPI();
-        console.log("call api");
+        console.log('call api');
       }
     }
   };
 
-  const handlePasswordChange = (event) => {
+  const handlePasswordChange = event => {
     setPassword(event.target.value);
   };
 
-  const handleConfirmPasswordChange = (event) => {
+  const handleConfirmPasswordChange = event => {
     setConfirmPassword(event.target.value);
   };
 
@@ -193,7 +187,7 @@ const Example = () => {
           </button>
         </div>
         {errorMessage &&
-          errorMessage.split("\n").map((error, index) => (
+          errorMessage.split('\n').map((error, index) => (
             <p key={index} style={errorStyle}>
               {error}
             </p>
@@ -201,6 +195,6 @@ const Example = () => {
       </form>
     </div>
   );
-}
+};
 
 export default Example;

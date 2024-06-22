@@ -45,7 +45,7 @@ const Example = () => {
       },
     });
     console.log("Button 2 clicked");
-    navigate("/HomePage");
+    navigate("/Login");
   };
 
   const containerStyle = {

@@ -13,23 +13,12 @@ const Example = () => {
   }, [navigate]);
 
   const createAccount = () => {
-    navigate('/Signup');
+    navigate('/SeedPhrase');
   };
 
   const importSeedPhrase = () => {
-    navigate('/Importwallet');
+    navigate('/ImportSeedphrase');
   };
-
-  // const containerStyle = {
-  //   backgroundColor: '#3f83ab80',
-  //   border: '1px solid #0a2fa748',
-  //   borderRadius: '8px',
-  //   boxShadow: '0 0 10px rgba(0,0,0,.1)',
-  //   margin: '0 auto',
-  //   maxWidth: '400px',
-  //   padding: '80px',
-  //   textAlign: 'center'
-  // };
 
   const buttonStyle = {
     padding: '10px 20px',
@@ -61,17 +50,10 @@ const Example = () => {
     left: '5rem',
   };
   const heading1 = {
-    padding: '10px 20px',
-    backgroundColor: '#3498dbd0',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '16px',
-    margin: '10px 0',
+    color: '#333',
     position: 'relative',
     top: '6rem',
-    left: '5rem',
+    right: '-7rem',
   };
 
   const errorStyle = {

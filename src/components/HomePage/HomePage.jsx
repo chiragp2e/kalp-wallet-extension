@@ -171,7 +171,7 @@ const HomePage = () => {
     fontSize: '1.2rem',
     border: '1px solid black',
     position: 'relative',
-    left: '4rem',
+    left: '-2rem',
     top: '-8rem',
   };
 
@@ -181,7 +181,7 @@ const HomePage = () => {
     border: '1px solid black',
     position: 'relative',
     top: '-8rem',
-    left: '3rem',
+    left: '1rem',
   };
 
   const cardStyle = {
@@ -196,7 +196,7 @@ const HomePage = () => {
     alignItems: 'center',
     position: 'relative',
     top: '-9rem',
-    left: '5rem',
+    left: '0rem',
   };
 
   const buttonStyle = {
