@@ -10,8 +10,8 @@ connectToWalletListner();
 const styleContainer = document.createElement('div');
 const appContainer = document.createElement('div');
 
-shadow.appendChild(styleContainer);
-shadow.appendChild(appContainer);
+// shadow.appendChild(styleContainer);
+// shadow.appendChild(appContainer);
 
 document.body.appendChild(root);
 

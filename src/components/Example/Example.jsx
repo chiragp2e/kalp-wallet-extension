@@ -1,61 +1,78 @@
-
-import styled from 'styled-components';
-import Box from 'components/Box';
-import Logo from 'assets/icons/logo.svg';
-import Button from '@mui/material/Button';
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Example = styled.div`
-  color: ${props => props.theme.palette.primary};
-  font-size: 20px;
-  text-align: center;
-`;
-
-export default () => {
-  const greeting = chrome.i18n.getMessage('greeting');
+const Example = () => {
   const navigate = useNavigate();
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-    console.log("hello logi")
-    useEffect(() => {
-    console.log("hello login passw")
+  useEffect(() => {
+    const hasAccount = localStorage.getItem('password');
+    if (hasAccount) {
+      navigate('/Login');
+    }
+  }, [navigate]);
 
-        const hasAccount = localStorage.getItem('password');
-        if (hasAccount) {
-            navigate('/Login');
-        }
-    }, []);
+  const createAccount = () => {
+    navigate('/SeedPhrase');
+  };
 
-    const createAccount = () => {
-        navigate('/Signup');
-    };
-    const importSeedPhrase = () => {
-        // navigate('/Importwallet');
-    };
+  const importSeedPhrase = () => {
+    navigate('/ImportSeedphrase');
+  };
+
+  const buttonStyle = {
+    padding: '10px 20px',
+    backgroundColor: '#3498dbd0',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    margin: '10px 0',
+    position: 'relative',
+    top: '3rem',
+    left: '5rem',
+    position: 'relative',
+    top: '6rem',
+    left: '5rem',
+  };
+  const buttonStyle2 = {
+    padding: '10px 20px',
+    backgroundColor: '#3498dbd0',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    margin: '10px 0',
+    position: 'relative',
+    top: '6rem',
+    left: '5rem',
+  };
+  const heading1 = {
+    color: '#333',
+    position: 'relative',
+    top: '6rem',
+    right: '-7rem',
+  };
+
+  const errorStyle = {
+    color: '#c0392b',
+    marginTop: '10px',
+  };
 
   return (
-    <Example>
-  <Box display="flex" flexDirection="column" alignItems="center">
     <div>
-      <Logo width="50px" height="50px" />
-      {greeting}
-    </div>
-    <div className="my-2 m-3">
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <Button variant="contained" className="btn btn-primary mb-2" onClick={createAccount}>
+      <h1 style={heading1}>Welcome</h1>
+      {errorMessage && <p style={errorStyle}>{errorMessage}</p>}
+      <button style={buttonStyle} onClick={createAccount}>
         Create new Wallet
-      </Button>
-      <Button variant="contained" className="btn btn-primary mb-2" onClick={importSeedPhrase}>
-        Import existing wallet
-      </Button>
+      </button>
+      <button style={buttonStyle2} onClick={importSeedPhrase}>
+        Import existing wallets
+      </button>
     </div>
-  </Box>
-</Example>
-
   );
 };
 
-
+export default Example;

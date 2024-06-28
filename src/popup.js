@@ -14,20 +14,24 @@ import Login from "./components/Login";
 import HomePage from "./components/HomePage";
 import Permission from "./components/Permission";
 import TransactionLogin from './components/TransactionLogin';
+import SeedPhrase from './components/SeedPhrase';
+import ImportSeedphrase from './components/ImportSeedphrase';
+
 
 const Popup = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box width="200px" padding={3}>
+      <div width="200px" padding={3}>
         
         <NoteState>
         <Router>
           <Routes>
             <Route exact path="/" element={<Example />} />
             <Route exact path="/Signup" element={<Signup />} />
-            {/* <Route exact path="/Seedphrase" element={<Seedphrase />} />
-            <Route exact path="/Importwallet" element={<Importwallet />} /> */}
+            <Route exact path="/ImportSeedphrase" element={<ImportSeedphrase />} />
+            {/* <Route exact path="/Importwallet" element={<Importwallet />} />  */}
             <Route exact path="/Login" element={<Login />} />
+            <Route exact path="/SeedPhrase" element={<SeedPhrase />} />
             <Route exact path="/TransLogin" element={<TransactionLogin />} />
             <Route exact path="/HomePage" element={<HomePage />} />
             <Route exact path="/Asset" element={<Asset />} />
@@ -35,7 +39,7 @@ const Popup = () => {
           </Routes>
         </Router>
       </NoteState>
-      </Box>
+      </div>
     </ThemeProvider>
   );
 };

@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    }
+
+    .wallet-container {
+      background-color: #3f83ab80;
+      border: 1px solid #0a2fa748;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,.1);
+      margin: 0 auto;
+      max-width: 400px;
+      padding: 80px;
+    }
+
+    .wallet-logo {
+    width: 100px;
+    height: 100px;
+    background-color: #007bff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+    color: #fff;
+    }
+
+    h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    }
+
+    button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    }
+    #button1{
+      margin: 10px;
+      position: relative;
+      right: -21px;
+    }
+    #button2{
+      margin: 10px;
+      position: relative;
+      right: -33px;
+    }
+    button:hover {
+    background-color: #0056b3;
+    }
+    a {
+      /* Your CSS styles here */
+      text-decoration: none; /* Removes the default underline */
+      color: blue; /* Sets the text color */
+      font-weight: bold; /* Makes the text bold */
+      /* Add other styles as needed */
+    }
+
+    a:hover {
+      /* Styles for when the mouse hovers over the link */
+      color: red; /* Change the text color on hover */
+      /* Add other hover styles as needed */
+    }
+    p {
+      margin-bottom: 10px;
+      font-family: monospace;
+      font-style: italic;
+      font-size: large;
+      position: inherit;
+    }
+    /* Add this to your stylesheet or in a style tag */
+    .asset-box {
+      border: 2px solid #0f7e1a;
+      border-radius: 21px;
+      margin: 9px 0;
+      padding: 2px;
+      background-color: white;
+      height: 103px;
+      width: 211px;
+    }
