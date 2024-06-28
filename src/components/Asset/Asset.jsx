@@ -5,7 +5,7 @@ import {
   evaluateTransaction,
   evaluateBalance,
   submitTransaction,
-} from 'test-kalp-wallet-package';
+} from 'kalp-wallet-extension-pkg';
 import noteContext from '../../context/noteContext';
 
 export default function Transaction() {

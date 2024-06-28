@@ -30,37 +30,34 @@ function Popup(message) {
     } else if (message.methodName === 'readTransaction') {
       homePageURL = chrome.runtime.getURL('popup.html#/HomePage');
     } else if (message.methodName === 'writeTransaction') {
-      // if (walletExtensionWindow === null) {
-      //   homePageURL = chrome.runtime.getURL('popup.html#/TransLogin');
-      // }
-      // else {
-
       homePageURL = chrome.runtime.getURL('popup.html#/Asset');
-
-      // }
     }
 
     console.log(homePageURL);
     // TODO: check the popup window should
-    chrome.windows.create(
-      {
-        url: homePageURL,
-        type: 'popup',
-        width: popupWidth,
-        height: popupHeight,
-        left: left,
-        top: top,
-      },
-      newWindow => {
-        walletExtensionWindow = newWindow;
+    if (walletExtensionWindow && !walletExtensionWindow.closed) {
+      chrome.windows.update(walletExtensionWindow.id, { focused: true });
+    } else {
+      chrome.windows.create(
+        {
+          url: homePageURL,
+          type: 'popup',
+          width: popupWidth,
+          height: popupHeight,
+          left: left,
+          top: top,
+        },
+        newWindow => {
+          walletExtensionWindow = newWindow;
 
-        chrome.windows.onRemoved.addListener(closedWindowId => {
-          if (walletExtensionWindow && closedWindowId === walletExtensionWindow.id) {
-            walletExtensionWindow = null;
-          }
-        });
-      }
-    );
+          chrome.windows.onRemoved.addListener(closedWindowId => {
+            if (walletExtensionWindow && closedWindowId === walletExtensionWindow.id) {
+              walletExtensionWindow = null;
+            }
+          });
+        }
+      );
+    }
   });
 
   return true;
@@ -107,15 +104,36 @@ function GetUserPermission(message) {
 }
 
 function GetEnrollmentId() {
-  const enrollmentId = localStorage.getItem('enrollmentId');
-  return enrollmentId;
+  //const enrollmentId = localStorage.getItem('enrollmentId');
+  chrome.storage.local.get('enrollmentID', result => {
+    if (chrome.runtime.lastError) {
+      console.error('Error retrieving stored value:', chrome.runtime.lastError);
+    } else {
+      const storedValue = result.enrollmentID; // Access the value using the correct key
+      const storedValue1 = result;
+      console.log('Stored value:', storedValue);
+      console.log('Stored value1:', storedValue1);
+      return storedValue;
+    }
+  });
+  // console.log('enrollmentID', enrollmentID);
+  // return enrollmentId;
 }
+
+//demo
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'POPUP_TO_BACKGROUND') {
+    console.log('Received message in background script:', message);
+    var enrollmentID = message.data;
+    chrome.storage.local.set({ enrollmentID }, () => {
+      console.log('UUID saved successfully', enrollmentID);
+    });
+  }
+});
+//demo end
 
 function SubmitTransaction(message) {
   console.log('walletExtensionWindow SubmitTransaction', walletExtensionWindow);
-  if (walletExtensionWindow && !walletExtensionWindow.closed) {
-    chrome.windows.update(walletExtensionWindow.id, { focused: true });
-  }
   console.log(message);
   const dappToken = message.dappToken;
   let transactionType = message;

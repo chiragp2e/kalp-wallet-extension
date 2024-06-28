@@ -7,7 +7,7 @@ import {
   getEnrollmentId,
   getKeyPairFromSeedPhrase,
   getSeedPhrase,
-} from 'test-kalp-wallet-package';
+} from 'kalp-wallet-extension-pkg';
 
 export default function SeedPhrase() {
   const navigate = useNavigate();

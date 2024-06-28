@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { evaluateTransaction, Network } from 'test-kalp-wallet-package';
+import { evaluateTransaction, Network } from 'kalp-wallet-extension-pkg';
 
 const HomePage = () => {
   const [alert, setAlert] = useState('Connected');
@@ -16,8 +16,9 @@ const HomePage = () => {
     navigate('/Login');
   };
 
-  // const enrollmentId = localStorage.getItem("enrollmentId");
-  // window.sendMessageToBackground("POPUP_TO_BACKGROUND", enrollmentId);
+  const enrollmentId = localStorage.getItem('enrollmentId');
+  //window.sendMessageToBackground('POPUP_TO_BACKGROUND', enrollmentId);
+  window.postMessage({ type: 'POPUP_TO_BACKGROUND', message: enrollmentId }, '*');
 
   console.log('from frontend incoming');
 

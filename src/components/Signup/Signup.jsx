@@ -9,7 +9,7 @@ import {
   getEnrollmentId,
   getKeyPairFromSeedPhrase,
   getSeedPhrase,
-} from 'test-kalp-wallet-package';
+} from 'kalp-wallet-extension-pkg';
 
 const Example = () => {
   const [password, setPassword] = useState('');

@@ -7,7 +7,7 @@ import {
   getKeyPairFromSeedPhrase,
   getSecret,
   enrollCsr,
-} from 'test-kalp-wallet-package';
+} from 'kalp-wallet-extension-pkg';
 
 export default function ImportSeedphrase() {
   const [seedphrase, setSeedphrase] = useState(''); // State for seedphrase input
