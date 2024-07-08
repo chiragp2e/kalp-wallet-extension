@@ -43,6 +43,14 @@ export default () => {
       );
       setResponseMessage(formattedItems.join("<br />"));
     };
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      console.log(`Message is disccoenect `, message);
+      if (message.type === `DISCONNECT_WALLET:${message.content.dappToken}`) {
+        navigate("/Login");
+      }
+    }
+    )
   
     //testing for window.event
     const setringData = async (
@@ -82,6 +90,7 @@ export default () => {
     };
   
     useEffect(() => {
+      console.log("hhe READ_TRANSACTION_BACKGROUND")
       updateGasAmount();
       handleCreateAsset();
   

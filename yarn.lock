@@ -14,7 +14,7 @@
   "resolved" "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.12.13.tgz"
   "version" "7.12.13"
 
-"@babel/core@^7.4.5", "@babel/core@^7.6.4":
+"@babel/core@^7.0.0", "@babel/core@^7.0.0-0", "@babel/core@^7.4.5", "@babel/core@^7.6.4":
   "integrity" "sha512-BQKE9kXkPlXHPeqissfxo0lySWJcYdEP0hdtJOH/iJfDdhOCcgtNCjftCJg3qqauB4h+lz2N6ixM++b9DN1Tcw=="
   "resolved" "https://registry.npmjs.org/@babel/core/-/core-7.12.13.tgz"
   "version" "7.12.13"
@@ -925,7 +925,7 @@
   "resolved" "https://registry.npmjs.org/@emotion/memoize/-/memoize-0.7.4.tgz"
   "version" "0.7.4"
 
-"@emotion/react@^11.11.4":
+"@emotion/react@^11.0.0-rc.0", "@emotion/react@^11.11.4", "@emotion/react@^11.4.1", "@emotion/react@^11.5.0":
   "integrity" "sha512-t8AjMlF0gHpvvxk5mAtCqR4vmxiGHCeJBaQO6gncUSdklELOgtwjerNY2yuJNfwnc6vi16U/+uMF+afIawJ9iw=="
   "resolved" "https://registry.npmjs.org/@emotion/react/-/react-11.11.4.tgz"
   "version" "11.11.4"
@@ -955,7 +955,7 @@
   "resolved" "https://registry.npmjs.org/@emotion/sheet/-/sheet-1.2.2.tgz"
   "version" "1.2.2"
 
-"@emotion/styled@^11.11.5":
+"@emotion/styled@^11.11.5", "@emotion/styled@^11.3.0":
   "integrity" "sha512-/ZjjnaNKvuMPxcIiUkf/9SHoG4Q196DRl1w82hQ3WCsjo1IUR8uaGWrC6a87CrYAW0Kb/pK7hk8BnLgLRi9KoQ=="
   "resolved" "https://registry.npmjs.org/@emotion/styled/-/styled-11.11.5.tgz"
   "version" "11.11.5"
@@ -1866,7 +1866,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
+"@types/react@*", "@types/react@^17.0.0 || ^18.0.0":
   "integrity" "sha512-V0kuGBX3+prX+DQ/7r2qsv1NsdfnCLnTgnRJ1pYnxykBhGMz+qj+box5lq7XsO5mtZsBqpjwwTu/7wszPfMBcw=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-18.3.1.tgz"
   "version" "18.3.1"
@@ -2102,7 +2102,7 @@
   "resolved" "https://registry.npmjs.org/ajv-keywords/-/ajv-keywords-3.5.2.tgz"
   "version" "3.5.2"
 
-"ajv@^6.1.0", "ajv@^6.10.2", "ajv@^6.12.4":
+"ajv@^6.1.0", "ajv@^6.10.2", "ajv@^6.12.4", "ajv@^6.9.1", "ajv@>=5.0.0":
   "integrity" "sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g=="
   "resolved" "https://registry.npmjs.org/ajv/-/ajv-6.12.6.tgz"
   "version" "6.12.6"
@@ -3509,7 +3509,7 @@
     "is-date-object" "^1.0.1"
     "is-symbol" "^1.0.2"
 
-"esbuild@^0.21.4":
+"esbuild@^0.21.4", "esbuild@>=0.17":
   "integrity" "sha512-sFMcNNrj+Q0ZDolrp5pDhH0nRPN9hLIM3fRPwgbLYJeSHHgnXSnbV3xYgSVuOeLWH9c73VwmEverVzupIv5xuA=="
   "resolved" "https://registry.npmjs.org/esbuild/-/esbuild-0.21.4.tgz"
   "version" "0.21.4"
@@ -4761,12 +4761,13 @@
   "resolved" "file:../../kalp-wallet-extension"
   "version" "1.0.0"
   dependencies:
-    "@types/chrome" "^0.0.268"
-    "@types/uuid" "^9.0.8"
-    "ts-loader" "^9.5.1"
-    "tsup" "^8.1.0"
-    "typescript" "^5.4.5"
-    "uuid" "^9.0.1"
+    "buffer" "^6.0.3"
+    "crypto-browserify" "^3.12.0"
+    "elliptic" "^6.5.5"
+    "ethers" "^5.6.4"
+    "forge" "^2.3.0"
+    "jsrsasign" "^11.1.0"
+    "link" "^2.1.1"
 
 "kind-of@^2.0.1":
   "integrity" "sha1-AY7HpM5+OobLkUG+UZ0kyPqpgbU= sha512-0u8i1NZ/mg0b+W3MGGw5I7+6Eib2nx72S/QvXa0hYjEkjTknYmEYQJwGu3mLC0BrhtJjtQafTkyRUQ75Kx0LVg=="
@@ -5635,7 +5636,7 @@
   "resolved" "https://registry.npmjs.org/preact-shadow-root/-/preact-shadow-root-1.0.2.tgz"
   "version" "1.0.2"
 
-"preact@^10.0.1":
+"preact@*", "preact@^10.0.1":
   "integrity" "sha512-r6siDkuD36oszwlCkcqDJCAKBQxGoeEGytw2DGMD5A/GGdu5Tymw+N2OBXwvOLxg6d1FeY8MgMV3cc5aVQo4Cg=="
   "resolved" "https://registry.npmjs.org/preact/-/preact-10.5.12.tgz"
   "version" "10.5.12"
@@ -5792,7 +5793,7 @@
     "loader-utils" "^1.1.0"
     "schema-utils" "^2.0.1"
 
-"react-dom@^18.3.1":
+"react-dom@^15.3.0 || ^16.0.0", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^18.3.1", "react-dom@>= 16.3.0", "react-dom@>=16.6.0", "react-dom@>=16.8", "react-dom@>=16.8.0":
   "integrity" "sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz"
   "version" "18.3.1"
@@ -5850,7 +5851,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@^18.3.1":
+"react@^15.3.0 || ^16.0.0", "react@^16.8.6", "react@^17.0.0 || ^18.0.0", "react@^18.3.1", "react@>= 16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0":
   "integrity" "sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
   "version" "18.3.1"
@@ -6623,7 +6624,7 @@
   "resolved" "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-1.0.4.tgz"
   "version" "1.0.4"
 
-"styled-components@^4.4.0":
+"styled-components@^4.4.0", "styled-components@>= 2":
   "integrity" "sha512-RNqj14kYzw++6Sr38n7197xG33ipEOktGElty4I70IKzQF1jzaD1U4xQ+Ny/i03UUhHlC5NWEO+d8olRCDji6g=="
   "resolved" "https://registry.npmjs.org/styled-components/-/styled-components-4.4.1.tgz"
   "version" "4.4.1"
@@ -6642,7 +6643,7 @@
     "stylis-rule-sheet" "^0.0.10"
     "supports-color" "^5.5.0"
 
-"styled-system@^5.1.2":
+"styled-system@^5.0.0-8", "styled-system@^5.1.2":
   "integrity" "sha512-7VoD0o2R3RKzOzPK0jYrVnS8iJdfkKsQJNiLRDjikOpQVqQHns/DXWaPZOH4tIKkhAT7I6wIsy9FWTWh2X3q+A=="
   "resolved" "https://registry.npmjs.org/styled-system/-/styled-system-5.1.5.tgz"
   "version" "5.1.5"
@@ -6951,7 +6952,7 @@
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
-"typescript@^5.4.5":
+"typescript@*", "typescript@^5.4.5", "typescript@>=4.5.0":
   "integrity" "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="
   "resolved" "https://registry.npmjs.org/typescript/-/typescript-5.4.5.tgz"
   "version" "5.4.5"
@@ -7197,7 +7198,7 @@
     "source-list-map" "^2.0.0"
     "source-map" "~0.6.1"
 
-"webpack@^4.41.2":
+"webpack@*", "webpack@^4", "webpack@^4.0.0", "webpack@^4.0.0 || ^5.0.0", "webpack@^4.3.0", "webpack@^4.41.2", "webpack@^5.0.0", "webpack@>=2", "webpack@4.x.x":
   "integrity" "sha512-6jJuJjg8znb/xRItk7bkT0+Q7AHCYjjFnvKIWQPkNIOyRqoCGvkOs0ipeQzrqz4l5FtN5ZI/ukEHroeX/o1/5Q=="
   "resolved" "https://registry.npmjs.org/webpack/-/webpack-4.46.0.tgz"
   "version" "4.46.0"

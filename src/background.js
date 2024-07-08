@@ -1,11 +1,12 @@
 
 import {createKalpWallet, connectToWalletBackgroundListener} from "kalp-wallet-extension-pkg";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+
 let walletExtensionWindow = null;
 
 console.log("walletExtensionWindow", walletExtensionWindow)
 function ConnectToWallet(message) {
-console.log("walletExtensionWindow ConnectToWallet", walletExtensionWindow)
-
   if (walletExtensionWindow && !walletExtensionWindow.closed) {
     chrome.windows.update(walletExtensionWindow.id, { focused: true });
   } else {
@@ -250,10 +251,19 @@ function ReadTransaction(message) {
 
 function DisconnectWallet (dappName) {
   console.log("hello discoo")
+  chrome.runtime.sendMessage(
+    {
+      type: `DISCONNECT_WALLET:${dappToken}`,
+      content: {
+        methodArgs,
+        dappToken,
+      },
+    },
+  )
   let token = localStorage.getItem(`${dappName}_token`)
   console.log("token disconnect", token)
   localStorage.removeItem(`${dappName}_token`)
-
+  navigate("/Login");
   return true
 }
 
