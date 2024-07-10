@@ -17,8 +17,11 @@ const HomePage = () => {
   };
 
   const enrollmentId = localStorage.getItem('enrollmentId');
-  //window.sendMessageToBackground('POPUP_TO_BACKGROUND', enrollmentId);
-  window.postMessage({ type: 'POPUP_TO_BACKGROUND', message: enrollmentId }, '*');
+
+  // Use chrome.runtime.sendMessage to communicate with the background script
+  chrome.runtime.sendMessage({ type: 'POPUP_TO_BACKGROUND', message: enrollmentId }, response => {
+    console.log('Response from background script:', response);
+  });
 
   console.log('from frontend incoming');
 

@@ -1,5 +1,6 @@
 import { createKalpWallet, connectToWalletBackgroundListener } from 'kalp-wallet-extension-pkg';
 let walletExtensionWindow = null;
+var storedValue;
 
 console.log('walletExtensionWindow', walletExtensionWindow);
 function ConnectToWallet(message) {
@@ -24,6 +25,7 @@ function Popup(message) {
     const top = currentWindow.top;
 
     let homePageURL;
+    console.log('walletExtensionWindow popup : ', walletExtensionWindow);
     console.log('message', message.methodName);
     if (message.methodName === 'connectToWallet') {
       homePageURL = chrome.runtime.getURL('popup.html');
@@ -103,33 +105,32 @@ function GetUserPermission(message) {
   });
 }
 
+chrome.storage.local.get('enrollmentID', result => {
+  if (chrome.runtime.lastError) {
+    console.error('Error retrieving stored value:', chrome.runtime.lastError);
+  } else {
+    storedValue = result.enrollmentID; // Access the value using the correct key
+    console.log('Stored value:', storedValue);
+  }
+});
+
 function GetEnrollmentId() {
-  //const enrollmentId = localStorage.getItem('enrollmentId');
-  chrome.storage.local.get('enrollmentID', result => {
-    if (chrome.runtime.lastError) {
-      console.error('Error retrieving stored value:', chrome.runtime.lastError);
-    } else {
-      const storedValue = result.enrollmentID; // Access the value using the correct key
-      const storedValue1 = result;
-      console.log('Stored value:', storedValue);
-      console.log('Stored value1:', storedValue1);
-      return storedValue;
-    }
-  });
-  // console.log('enrollmentID', enrollmentID);
-  // return enrollmentId;
+  return storedValue;
 }
 
 //demo
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'POPUP_TO_BACKGROUND') {
     console.log('Received message in background script:', message);
-    var enrollmentID = message.data;
+    var enrollmentID = message.message; // Corrected to access message.message
     chrome.storage.local.set({ enrollmentID }, () => {
       console.log('UUID saved successfully', enrollmentID);
+      sendResponse({ status: 'success' });
     });
+    return true; // Indicates that the response is asynchronous
   }
 });
+
 //demo end
 
 function SubmitTransaction(message) {
