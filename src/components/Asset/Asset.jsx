@@ -42,7 +42,9 @@ export default function Transaction() {
     navigate('/HomePage');
   };
 
+  console.log("dbahnj WRITE_TRANSACTION_BACKGROUND", a, channelName, chainCodeName1 )
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("hbhebhebh WRITE_TRANSACTION_BACKGROUND", message)
     if (message.type === `WRITE_TRANSACTION_BACKGROUND:${message.content.dappToken}`) {
       let transactionType = message.content;
 

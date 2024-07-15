@@ -17,7 +17,7 @@ function ConnectToWallet(message) {
 }
 
 function Popup(message) {
-  console.log('heeh popup');
+  console.log('heeh popup', message);
   chrome.windows.getCurrent({ populate: true }, currentWindow => {
     const popupWidth = 370;
     const popupHeight = 500;
@@ -36,8 +36,8 @@ function Popup(message) {
     }
 
     console.log(homePageURL);
-    // TODO: check the popup window should
-    if (walletExtensionWindow && !walletExtensionWindow.closed) {
+
+    if (walletExtensionWindow) {
       chrome.windows.update(walletExtensionWindow.id, { focused: true });
     } else {
       chrome.windows.create(
@@ -64,6 +64,7 @@ function Popup(message) {
 
   return true;
 }
+
 
 function GetUserPermission(message) {
   var dappToken = message.dappToken;
@@ -136,6 +137,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 function SubmitTransaction(message) {
   console.log('walletExtensionWindow SubmitTransaction', walletExtensionWindow);
   console.log(message);
+  let ispopup = false;
+  if (walletExtensionWindow && !walletExtensionWindow.closed) {
+    chrome.windows.update(walletExtensionWindow.id, { focused: true });
+  } else {
+    ispopup = Popup(message);
+  }
   const dappToken = message.dappToken;
   let transactionType = message;
   const channelName = transactionType.methodArgs[0];
@@ -146,8 +153,6 @@ function SubmitTransaction(message) {
 
   console.log(channelName, chainCodeName, transactionNameBalance, transactionParams, methodArgs);
 
-  // const ispopup = kalpWallet.Popup(message);
-  const ispopup = Popup(message);
   if (ispopup) {
     console.log('ispopup', ispopup);
     setTimeout(() => {
@@ -161,8 +166,9 @@ function SubmitTransaction(message) {
           dappToken,
         },
       });
-    }, 100);
+    }, 1000);
     setTimeout(() => {
+      console.log("fbhabhafba hello", methodArgs)
       chrome.runtime.sendMessage(
         {
           type: `WRITE_TRANSACTION_BACKGROUND:${dappToken}`,
@@ -180,7 +186,7 @@ function SubmitTransaction(message) {
           }
         }
       );
-    }, 100);
+    }, 1000);
 
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.type === `TRANSACTION_ID:${dappToken}`) {
