@@ -111,10 +111,6 @@ const HomePage = () => {
         }
         run();
         return true;
-      } else if (message.type === 'WRITE_TRANSACTION') {
-        navigate('/Asset');
-      } else if (message.type === 'FORM_SEND_TO_POPUP') {
-        navigate('/Asset');
       }
     });
   }, []);

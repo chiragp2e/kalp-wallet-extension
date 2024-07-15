@@ -37,9 +37,11 @@ function Popup(message) {
 
     console.log(homePageURL);
     // TODO: check the popup window should
+    //
     if (walletExtensionWindow && !walletExtensionWindow.closed) {
       chrome.windows.update(walletExtensionWindow.id, { focused: true });
     } else {
+      console.log('in else');
       chrome.windows.create(
         {
           url: homePageURL,
