@@ -26,6 +26,7 @@ function Popup(message) {
 
     let homePageURL;
     console.log('walletExtensionWindow popup : ', walletExtensionWindow);
+    console.log('message :', message);
     console.log('message', message.methodName);
     if (message.methodName === 'connectToWallet') {
       homePageURL = chrome.runtime.getURL('popup.html');
@@ -209,6 +210,9 @@ function SubmitTransaction(message) {
 
 function ReadTransaction(message) {
   console.log('bg js read transaction');
+  console.log('message  pop:', message);
+  const ispopup = Popup(message);
+
   const dappToken = message.dappToken;
   let transactionType = message;
   const channelName = transactionType.methodArgs[0];
@@ -218,7 +222,7 @@ function ReadTransaction(message) {
   const methodArgs = [channelName, chainCodeName, transactionNameBalance, transactionParams];
 
   console.log('bg js read transaction content', message, methodArgs);
-
+  // const ispopup = Popup(message);
   chrome.runtime.sendMessage(
     {
       type: `READ_TRANSACTION_BACKGROUND:${dappToken}`,
@@ -273,58 +277,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
-// function comman(val, dappId) {
-//   chrome.runtime.sendMessage({
-//     msg: 'something_completed',
-//     data: {
-//       subject: 'Loading',
-//       content: 'Just completed!',
-//       dappId: dappId,
-//     },
-//   });
-//   chrome.windows.getCurrent({ populate: true }, currentWindow => {
-//     const popupWidth = 370;
-//     const popupHeight = 500;
-//     const left = currentWindow.left + currentWindow.width - popupWidth;
-//     const top = currentWindow.top;
-
-//     // Specify the URL for opening the HomePage directly
-//     // Append "/HomePage" to the URL
-//     let homePageURL;
-//     console.log(`val is :${val}`);
-//     if (val === 'Start') {
-//       homePageURL = chrome.runtime.getURL('popup.html');
-//     } else if (val === 'HomePage') {
-//       homePageURL = chrome.runtime.getURL('popup.html#/HomePage');
-//     } else if (val === 'AssetPage') {
-//       homePageURL = chrome.runtime.getURL('popup.html#/Asset');
-//     }
-
-//     console.log(homePageURL);
-//     chrome.windows.create(
-//       {
-//         url: homePageURL,
-//         type: 'popup',
-//         width: popupWidth,
-//         height: popupHeight,
-//         left: left,
-//         top: top,
-//       },
-//       newWindow => {
-//         console.log('Hi from background.js');
-//         console.log('New window created:', newWindow);
-//         walletExtensionWindow = newWindow;
-
-//         // Add an event listener to handle window closure
-//         chrome.windows.onRemoved.addListener(closedWindowId => {
-//           if (walletExtensionWindow && closedWindowId === walletExtensionWindow.id) {
-//             walletExtensionWindow = null;
-//           }
-//         });
-//       }
-//     );
-//   });
-// }
+//close window
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'closePopup') {
+    chrome.windows.remove(sender.tab.windowId, () => {
+      sendResponse({ success: true });
+    });
+    return true; // Keep the message channel open for sendResponse
+  }
+});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'SEND_TO_POPUP') {

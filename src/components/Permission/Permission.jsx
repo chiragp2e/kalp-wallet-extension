@@ -1,7 +1,7 @@
 /* global chrome */
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import noteContext from "../../context/noteContext";
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import noteContext from '../../context/noteContext';
 
 const Example = () => {
   const navigate = useNavigate();
@@ -12,10 +12,23 @@ const Example = () => {
     setDappName(a[6]);
   }, [a]);
 
-  console.log("notecontext", a);
+  // Function to close the wallet as soon sas it reach Homepage just like metamask do
+  async function performActionsAndClose() {
+    try {
+      chrome.runtime.sendMessage({ action: 'closePopup' }, response => {
+        if (response.success) {
+          console.log('Popup closed successfully.');
+        } else {
+          console.error('Failed to close the popup.');
+        }
+      });
+    } catch (error) {
+      console.error('Error performing actions:', error);
+    }
+  }
 
   const handleClick1 = () => {
-    console.log("Button 1 clicked");
+    console.log('Button 1 clicked');
     chrome.runtime.sendMessage({
       type: `GIVE_PERMISSION:${a[5]}`,
       message: {
@@ -24,12 +37,16 @@ const Example = () => {
         methodArgs: a[7],
         methodCallId: a[8],
         methodName: a[9],
-        permission: "YES",
+        permission: 'YES',
       },
     });
 
     localStorage.setItem(`${dappName}_token`, a[5]);
-    navigate("/HomePage");
+    setTimeout(() => {
+      performActionsAndClose();
+    }, '1000');
+
+    //navigate('/HomePage');
   };
 
   const handleClick2 = () => {
@@ -41,11 +58,11 @@ const Example = () => {
         methodArgs: a[7],
         methodCallId: a[8],
         methodName: a[9],
-        permission: "NO",
+        permission: 'NO',
       },
     });
-    console.log("Button 2 clicked");
-    navigate("/Login");
+    console.log('Button 2 clicked');
+    navigate('/Login');
   };
 
   const containerStyle = {

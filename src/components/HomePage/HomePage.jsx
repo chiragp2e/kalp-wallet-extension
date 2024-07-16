@@ -18,6 +18,8 @@ const HomePage = () => {
 
   const enrollmentId = localStorage.getItem('enrollmentId');
 
+
+
   // Use chrome.runtime.sendMessage to communicate with the background script
   chrome.runtime.sendMessage({ type: 'POPUP_TO_BACKGROUND', message: enrollmentId }, response => {
     console.log('Response from background script:', response);
