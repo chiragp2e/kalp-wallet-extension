@@ -42,11 +42,11 @@ const Example = () => {
     });
 
     localStorage.setItem(`${dappName}_token`, a[5]);
-    setTimeout(() => {
-      performActionsAndClose();
-    }, '1000');
+    // setTimeout(() => {
+    //   performActionsAndClose();
+    // }, '1000');
 
-    //navigate('/HomePage');
+    navigate('/HomePage');
   };
 
   const handleClick2 = () => {

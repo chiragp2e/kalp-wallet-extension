@@ -1,4 +1,6 @@
 import { createKalpWallet, connectToWalletBackgroundListener } from 'kalp-wallet-extension-pkg';
+import { permission } from 'process';
+import { func } from 'prop-types';
 let walletExtensionWindow = null;
 var storedValue;
 
@@ -67,7 +69,6 @@ function Popup(message) {
   return true;
 }
 
-
 function GetUserPermission(message) {
   var dappToken = message.dappToken;
   var dappName = message.dappName;
@@ -121,20 +122,51 @@ function GetEnrollmentId() {
   return storedValue;
 }
 
-//demo
+//getEnrollmetId
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'POPUP_TO_BACKGROUND') {
-    console.log('Received message in background script:', message);
+    console.log('Received message from homepage:', message);
     var enrollmentID = message.message; // Corrected to access message.message
     chrome.storage.local.set({ enrollmentID }, () => {
       console.log('UUID saved successfully', enrollmentID);
       sendResponse({ status: 'success' });
     });
-    return true; // Indicates that the response is asynchronous
+    return true;
   }
 });
 
-//demo end
+//unlockPermission
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'UNLOCK_PERMISSION') {
+    console.log('Received message from Login script:', message);
+    const unlockPermission = message.message;
+    chrome.storage.local.set({ unlockPermission }, () => {
+      console.log('Permission :', unlockPermission);
+      sendResponse({ status: 'success' });
+    });
+    return true;
+  }
+});
+
+//function demo for unlockcing wallet
+
+chrome.storage.local.get('unlockPermission', result => {
+  console.log('getting value');
+  if (chrome.runtime.lastError) {
+    console.error('Error retrieving stored value:', chrome.runtime.lastError);
+  } else {
+    console.log('hey from background in storage');
+    storedValue = result.unlockPermission; // Access the value using the correct key
+    console.log('Stored value unlockPermission:', storedValue);
+    chrome.runtime.sendMessage({ type: 'PERMISSION_GRANTED', message: 'TRUE' }, response => {
+      console.log('Response sending:');
+    });
+  }
+});
+
+chrome.runtime.sendMessage({ type: 'UNLOCK_PERMISSION', message: 'TRUE' }, response => {
+  console.log('Response from background script:', response);
+});
 
 function SubmitTransaction(message) {
   console.log('walletExtensionWindow SubmitTransaction', walletExtensionWindow);
@@ -170,7 +202,7 @@ function SubmitTransaction(message) {
       });
     }, 1000);
     setTimeout(() => {
-      console.log("fbhabhafba hello", methodArgs)
+      console.log('fbhabhafba hello', methodArgs);
       chrome.runtime.sendMessage(
         {
           type: `WRITE_TRANSACTION_BACKGROUND:${dappToken}`,
@@ -290,6 +322,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
     return true; // Keep the message channel open for sendResponse
   }
+});
+
+//remove key
+chrome.runtime.onStartup.addListener(() => {
+  console.log('key is false now');
+  chrome.storage.local.set({ isAuthenticated: false });
+});
+
+chrome.runtime.onSuspend.addListener(() => {
+  console.log('key is false now');
+  chrome.storage.local.set({ isAuthenticated: false });
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

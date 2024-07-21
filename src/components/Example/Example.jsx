@@ -6,6 +6,12 @@ const Example = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.type === 'PERMISSION_GRANTED') {
+        console.log('Received message from background regarding permission script:');
+        navigate('/HomePage');
+      }
+    });
     const hasAccount = localStorage.getItem('password');
     if (hasAccount) {
       navigate('/Login');

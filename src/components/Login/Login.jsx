@@ -7,12 +7,32 @@ export default () => {
   console.log('hello login');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const storedPassword = localStorage.getItem('password');
   const publicCertificate = localStorage.getItem('cert');
   const handlePasswordChange = event => {
     setPassword(event.target.value);
   };
+
+  useEffect(() => {
+    chrome.storage.local.get('isAuthenticated', result => {
+      console.log('isAuthenticated :', result.isAuthenticated);
+      setIsAuthenticated(result.isAuthenticated);
+      // if (!result.isAuthenticated) {
+      //   console.log('not register yet 1:', isAuthenticated);
+      // } else if (isAuthenticated) {
+      //   console.log('isAuthenticated in else :', isAuthenticated);
+      if (result.isAuthenticated == true) {
+        console.log('inside true');
+        navigate('/HomePage');
+      } else {
+        console.log('not register yet 2:', result.isAuthenticated);
+      }
+      // }
+    });
+  }, []);
+
   const handleLoginClick = async () => {
     const isMatch = await bcrypt.compare(password, storedPassword);
     console.log(`match: ${isMatch}`);
@@ -26,7 +46,9 @@ export default () => {
         return;
       }
       if (isMatch) {
-        // navigate("/HomePage");
+        chrome.storage.local.set({ isAuthenticated: true }, () => {
+          console.log('isAuthenticated activate');
+        });
         navigate('/Permission');
       } else {
         setErrorMessage('Incorrect password. Please try again.');
@@ -45,18 +67,18 @@ export default () => {
     margin: '0 auto',
     maxWidth: '400px',
     padding: '80px',
-    textAlign: 'center' ,// Center align text
-    position:' relative',
+    textAlign: 'center', // Center align text
+    position: ' relative',
     width: '10rem',
     height: '18rem',
   };
 
   const loginFormStyle = {
-    textAlign: 'center'
+    textAlign: 'center',
   };
 
   const formGroupStyle = {
-    marginBottom: '20px'
+    marginBottom: '20px',
   };
 
   const labelStyle = {
@@ -83,7 +105,7 @@ export default () => {
 
   const errorStyle = {
     color: '#c0392b',
-    marginTop: '10px'
+    marginTop: '10px',
   };
 
   const buttonStyle = {
@@ -118,9 +140,18 @@ export default () => {
               style={inputStyle}
             />
           </div>
-          {errorMessage && <p className="error" style={errorStyle}>{errorMessage}</p>}
+          {errorMessage && (
+            <p className="error" style={errorStyle}>
+              {errorMessage}
+            </p>
+          )}
           <div className="d-flex justify-content-center align-items-center">
-            <button type="submit" className="btn btn-primary" onClick={handleLoginClick} style={buttonStyle}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={handleLoginClick}
+              style={buttonStyle}
+            >
               Login
             </button>
           </div>
