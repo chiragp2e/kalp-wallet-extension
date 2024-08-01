@@ -49,7 +49,14 @@ export default () => {
         chrome.storage.local.set({ isAuthenticated: true }, () => {
           console.log('isAuthenticated activate');
         });
-        navigate('/Permission');
+        //Checks if it's value exist
+        // const tokenExit = localStorage.getItem('dappTokens');
+        // if(tokenExit){
+        //   navigate('/HomePage');
+        // }else{
+          navigate('/Permission');
+        // }
+        
       } else {
         setErrorMessage('Incorrect password. Please try again.');
       }

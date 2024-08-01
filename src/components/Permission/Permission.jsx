@@ -41,7 +41,25 @@ const Example = () => {
       },
     });
 
-    localStorage.setItem(`${dappName}_token`, a[5]);
+    // localStorage.setItem(`${dappName}_token`, a[5]);
+    //need to add condition like if token exist than dont add
+    let valueToken = a[5];
+
+    let tokens = localStorage.getItem('dappTokens');
+
+    // Parse the tokens if they exist, otherwise initialize an empty array
+    tokens = tokens ? JSON.parse(tokens) : [];
+
+    // Check if the token already exists in the array
+    if (!tokens.includes(valueToken)) {
+      // Add the new token to the array if it doesn't already exist
+      tokens.push(valueToken);
+
+      // Store the updated array back to localStorage
+      localStorage.setItem('dappTokens', JSON.stringify(tokens));
+    } else {
+      console.log('Token already exists in the array.');
+    }
     // setTimeout(() => {
     //   performActionsAndClose();
     // }, '1000');

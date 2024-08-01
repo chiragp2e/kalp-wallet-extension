@@ -1,4 +1,9 @@
-import { createKalpWallet, connectToWalletBackgroundListener } from 'kalp-wallet-extension-pkg';
+import {
+  createKalpWallet,
+  connectToWalletBackgroundListener,
+  deleteKeyValue,
+  storeKeyValue,
+} from 'kalp-wallet-extension-pkg';
 import { permission } from 'process';
 import { func } from 'prop-types';
 let walletExtensionWindow = null;
@@ -366,4 +371,103 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
   }
   return true;
+});
+
+//storing data in INdexed db
+const dbName = 'myDatabases';
+const storeName = 'keyValueStore';
+
+console.log('indexstart');
+
+// function storeKeyValue(key, value) {
+//   const request = indexedDB.open(dbName, 1);
+
+//   request.onerror = event => {
+//     console.error('Database error:', event.target.error);
+//   };
+
+//   request.onsuccess = event => {
+//     const db = event.target.result;
+//     const transaction = db.transaction([storeName], 'readwrite');
+//     const store = transaction.objectStore(storeName);
+//     const data = {
+//       key: key,
+//       value: value,
+//     };
+
+//     const putRequest = store.put(data); // no need to pass the key separately
+
+//     putRequest.onerror = event => {
+//       console.error('Error storing data:', event.target.error);
+//     };
+
+//     putRequest.onsuccess = event => {
+//       console.log('Data stored successfully');
+//     };
+//   };
+
+//   request.onupgradeneeded = event => {
+//     const db = event.target.result;
+//     if (!db.objectStoreNames.contains(storeName)) {
+//       db.createObjectStore(storeName, { keyPath: 'key' });
+//     }
+//   };
+// }
+
+console.log('indexEnd');
+
+// Calling the storeKeyValue function:
+const myKey = 'val';
+const myValue = {
+  name: 'zac',
+};
+function strKey() {
+  console.log('start store');
+  storeKeyValue(myKey, myValue, dbName, storeName);
+  console.log('end store');
+}
+strKey();
+//delete
+// function deleteKeyValue(key) {
+//   const request = indexedDB.open(dbName, 1);
+
+//   request.onerror = event => {
+//     console.error('Database error:', event.target.error);
+//   };
+
+//   request.onsuccess = event => {
+//     const db = event.target.result;
+//     const transaction = db.transaction([storeName], 'readwrite');
+//     const store = transaction.objectStore(storeName);
+
+//     const deleteRequest = store.delete(key);
+
+//     deleteRequest.onerror = event => {
+//       console.error('Error deleting data:', event.target.error);
+//     };
+
+//     deleteRequest.onsuccess = event => {
+//       console.log('Data deleted successfully');
+//     };
+//   };
+
+//   request.onupgradeneeded = event => {
+//     const db = event.target.result;
+//     if (!db.objectStoreNames.contains(storeName)) {
+//       db.createObjectStore(storeName, { keyPath: 'key' });
+//     }
+//   };
+// }
+
+// Calling the deleteKeyValue function:
+const myKeyToDelete = 'val';
+//
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'DISCONNECT_WALLET') {
+    // Handle the disconnect wallet logic here
+    console.log('Wallet disconnected new');
+    deleteKeyValue(myKeyToDelete, dbName, storeName);
+    sendResponse({ status: 'success' });
+  }
 });

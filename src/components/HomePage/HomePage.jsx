@@ -17,9 +17,6 @@ const HomePage = () => {
   };
 
   const enrollmentId = localStorage.getItem('enrollmentId');
-  chrome.runtime.sendMessage({ type: 'UNLOCK_PERMISSION', message: 'TRUE' }, response => {
-    console.log('Response from background script:', response);
-  });
 
   // Use chrome.runtime.sendMessage to communicate with the background script
   chrome.runtime.sendMessage({ type: 'POPUP_TO_BACKGROUND', message: enrollmentId }, response => {
@@ -152,8 +149,16 @@ const HomePage = () => {
     window.URL.revokeObjectURL(url);
   };
 
+  //delete token and close wallet extension
   const signOut = () => {
-    // Implement sign out logic
+    localStorage.removeItem('OPENSEA_token');
+    chrome.runtime.sendMessage({ action: 'closePopup' }, response => {
+      if (response.success) {
+        console.log('Popup closed successfully.');
+      } else {
+        console.error('Failed to close the popup.');
+      }
+    });
   };
 
   const containerStyle = {
