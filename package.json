@@ -44,6 +44,7 @@
     "bcryptjs": "^2.4.3",
     "classnames": "^2.2.6",
     "core-js": "^3.3.3",
+    "crypto-js": "^4.2.0",
     "kalp-wallet": "^0.0.5",
     "lodash.omit": "^4.5.0",
     "moment": "^2.30.1",

@@ -45,6 +45,9 @@ const Example = () => {
       const certificate = await registerAndEnrollUser(Network.Stagenet, enrollmentID, createCSRKey);
       console.log(`registerAndEnrollUser data :${certificate}`);
       localStorage.setItem('cert', certificate);
+      chrome.storage.local.set({ isAuthenticated: true }, () => {
+        console.log('isAuthenticated activate');
+      });
       navigate('/Permission');
     } catch (error) {
       throw Error(error);

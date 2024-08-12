@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { evaluateTransaction, Network } from 'kalp-wallet-extension-pkg';
+import { evaluateTransaction, Network, deleteKeyValue } from 'kalp-wallet-extension-pkg';
 
 const HomePage = () => {
   const [alert, setAlert] = useState('Connected');
@@ -151,7 +151,11 @@ const HomePage = () => {
 
   //delete token and close wallet extension
   const signOut = () => {
+    const myKeyToDelete = 'val';
+    const dbName = 'myDatabases';
+    const storeName = 'keyValueStore';
     localStorage.removeItem('OPENSEA_token');
+    deleteKeyValue(myKeyToDelete, dbName, storeName);
     chrome.runtime.sendMessage({ action: 'closePopup' }, response => {
       if (response.success) {
         console.log('Popup closed successfully.');

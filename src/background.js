@@ -4,10 +4,16 @@ import {
   deleteKeyValue,
   storeKeyValue,
 } from 'kalp-wallet-extension-pkg';
+import bcrypt from 'bcryptjs';
+import CryptoJS from 'crypto-js';
 import { permission } from 'process';
 import { func } from 'prop-types';
 let walletExtensionWindow = null;
 var storedValue;
+const myValue = '$2a$10$T7/3oDxg7d7Lz1s0ouOM2u6uutnwdplrgz8MaN5xETP3kv016.9Cy';
+const myKey = 'Site';
+const dbName = 'myDatabases';
+const storeName = 'keyValueStore';
 
 console.log('walletExtensionWindow', walletExtensionWindow);
 function ConnectToWallet(message) {
@@ -20,6 +26,7 @@ function ConnectToWallet(message) {
     if (ispopup) {
       GetUserPermission(message);
     }
+    crypto - js;
   }
 }
 
@@ -81,6 +88,7 @@ function GetUserPermission(message) {
   var methodCallId = message.methodCallId;
   var methodName = message.methodName;
   console.log('sign up note', dappToken, dappName, methodArgs, methodCallId, methodName);
+
   setTimeout(() => {
     chrome.runtime.sendMessage({
       type: 'SEND_TO_NOTE_CONTEXT',
@@ -92,13 +100,18 @@ function GetUserPermission(message) {
         methodName,
       },
     });
-  }, 100);
+  }, 1000);
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === `GIVE_PERMISSION:${dappToken}`) {
       console.log('Received message in html script:', request);
       var response = request;
       if (request.message.permission === 'YES') {
         response.message.output = true;
+        hashData(dappToken).then(hashedValue => {
+          console.log('actual value :', dappToken);
+          console.log('hashedValue 1:', hashedValue);
+          storeKeyValue(myKey, hashedValue, dbName, storeName);
+        });
       } else {
         response.message.output = false;
       }
@@ -296,7 +309,6 @@ function DisconnectWallet(dappName) {
   let token = localStorage.getItem(`${dappName}_token`);
   console.log('token disconnect', token);
   localStorage.removeItem(`${dappName}_token`);
-
   return true;
 }
 
@@ -309,36 +321,7 @@ const kalpWallet = createKalpWallet({
   DisconnectWallet: DisconnectWallet,
 });
 
-console.log('hello signup background js 122');
-
 connectToWalletBackgroundListener(kalpWallet);
-
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.action === 'getGlobalObject') {
-    sendResponse({ globalObject });
-  }
-});
-
-//close window
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'closePopup') {
-    chrome.windows.remove(sender.tab.windowId, () => {
-      sendResponse({ success: true });
-    });
-    return true; // Keep the message channel open for sendResponse
-  }
-});
-
-//remove key
-chrome.runtime.onStartup.addListener(() => {
-  console.log('key is false now');
-  chrome.storage.local.set({ isAuthenticated: false });
-});
-
-chrome.runtime.onSuspend.addListener(() => {
-  console.log('key is false now');
-  chrome.storage.local.set({ isAuthenticated: false });
-});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'SEND_TO_POPUP') {
@@ -373,101 +356,57 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
-//storing data in INdexed db
-const dbName = 'myDatabases';
-const storeName = 'keyValueStore';
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.action === 'getGlobalObject') {
+    sendResponse({ globalObject });
+  }
+});
 
-console.log('indexstart');
+//close window
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'closePopup') {
+    chrome.windows.remove(sender.tab.windowId, () => {
+      sendResponse({ success: true });
+    });
+    return true; // Keep the message channel open for sendResponse
+  }
+});
 
-// function storeKeyValue(key, value) {
-//   const request = indexedDB.open(dbName, 1);
+//remove key
+chrome.runtime.onStartup.addListener(() => {
+  console.log('key is false now');
+  chrome.storage.local.set({ isAuthenticated: false });
+});
 
-//   request.onerror = event => {
-//     console.error('Database error:', event.target.error);
-//   };
-
-//   request.onsuccess = event => {
-//     const db = event.target.result;
-//     const transaction = db.transaction([storeName], 'readwrite');
-//     const store = transaction.objectStore(storeName);
-//     const data = {
-//       key: key,
-//       value: value,
-//     };
-
-//     const putRequest = store.put(data); // no need to pass the key separately
-
-//     putRequest.onerror = event => {
-//       console.error('Error storing data:', event.target.error);
-//     };
-
-//     putRequest.onsuccess = event => {
-//       console.log('Data stored successfully');
-//     };
-//   };
-
-//   request.onupgradeneeded = event => {
-//     const db = event.target.result;
-//     if (!db.objectStoreNames.contains(storeName)) {
-//       db.createObjectStore(storeName, { keyPath: 'key' });
-//     }
-//   };
-// }
-
-console.log('indexEnd');
+chrome.runtime.onSuspend.addListener(() => {
+  console.log('key is false now');
+  chrome.storage.local.set({ isAuthenticated: false });
+});
 
 // Calling the storeKeyValue function:
-const myKey = 'val';
-const myValue = {
-  name: 'zac',
-};
-function strKey() {
-  console.log('start store');
-  storeKeyValue(myKey, myValue, dbName, storeName);
-  console.log('end store');
+function hashData(data) {
+  return bcrypt
+    .genSalt(10)
+    .then(salt => {
+      return bcrypt.hash(data, salt);
+    })
+    .then(hashedData => {
+      console.log(`hashedValue: ${hashedData}`);
+      return hashedData;
+    })
+    .catch(error => {
+      console.error('Error hashing data:', error);
+      throw error;
+    });
 }
-strKey();
-//delete
-// function deleteKeyValue(key) {
-//   const request = indexedDB.open(dbName, 1);
-
-//   request.onerror = event => {
-//     console.error('Database error:', event.target.error);
-//   };
-
-//   request.onsuccess = event => {
-//     const db = event.target.result;
-//     const transaction = db.transaction([storeName], 'readwrite');
-//     const store = transaction.objectStore(storeName);
-
-//     const deleteRequest = store.delete(key);
-
-//     deleteRequest.onerror = event => {
-//       console.error('Error deleting data:', event.target.error);
-//     };
-
-//     deleteRequest.onsuccess = event => {
-//       console.log('Data deleted successfully');
-//     };
-//   };
-
-//   request.onupgradeneeded = event => {
-//     const db = event.target.result;
-//     if (!db.objectStoreNames.contains(storeName)) {
-//       db.createObjectStore(storeName, { keyPath: 'key' });
-//     }
-//   };
-// }
 
 // Calling the deleteKeyValue function:
-const myKeyToDelete = 'val';
-//
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'DISCONNECT_WALLET') {
     // Handle the disconnect wallet logic here
     console.log('Wallet disconnected new');
-    deleteKeyValue(myKeyToDelete, dbName, storeName);
+    const myVal = 'b37e85d9-0e89-443e-b867-297cac957f27';
+    deleteKeyValue(myKey, myVal, dbName, storeName);
     sendResponse({ status: 'success' });
   }
 });
