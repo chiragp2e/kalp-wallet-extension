@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
+import noteContext from '../../context/noteContext';
+import { checkAndNavigate } from 'kalp-wallet-extension-pkg';
 
 export default () => {
   console.log('hello login');
@@ -11,27 +13,114 @@ export default () => {
   const navigate = useNavigate();
   const storedPassword = localStorage.getItem('password');
   const publicCertificate = localStorage.getItem('cert');
-  const handlePasswordChange = event => {
-    setPassword(event.target.value);
-  };
+  const a = useContext(noteContext);
+  const myKey = 'Site';
+  const dbName = 'myDatabases';
+  const storeName = 'keyValueStore';
+  const dapptokens = a[5];
 
   useEffect(() => {
+    console.log('dapptoken from dapp : ', a[5]);
     chrome.storage.local.get('isAuthenticated', result => {
       console.log('isAuthenticated :', result.isAuthenticated);
       setIsAuthenticated(result.isAuthenticated);
-      // if (!result.isAuthenticated) {
-      //   console.log('not register yet 1:', isAuthenticated);
-      // } else if (isAuthenticated) {
-      //   console.log('isAuthenticated in else :', isAuthenticated);
-      if (result.isAuthenticated == true) {
-        console.log('inside true');
-        navigate('/HomePage');
-      } else {
-        console.log('not register yet 2:', result.isAuthenticated);
+
+      // async function checkAndNavigate(key, plaintextValue, dbName, storeName) {
+      //   console.log('checkAndNavigate start:');
+      //   const request = indexedDB.open(dbName, 1);
+
+      //   return new Promise((resolve, reject) => {
+      //     request.onerror = event => {
+      //       console.error('Database error:', event.target.error);
+      //       reject(false);
+      //     };
+
+      //     request.onsuccess = event => {
+      //       const db = event.target.result;
+      //       const transaction = db.transaction([storeName], 'readonly');
+      //       const store = transaction.objectStore(storeName);
+
+      //       // Get the current array stored under the specified key
+      //       const getRequest = store.get(key);
+
+      //       getRequest.onerror = event => {
+      //         console.error('Error retrieving data:', event.target.error);
+      //         reject(false);
+      //       };
+
+      //       getRequest.onsuccess = event => {
+      //         let data = getRequest.result;
+      //         if (data) {
+      //           let valueArray = data.value;
+
+      //           // Promise-based comparison of the array
+      //           console.log('matching start');
+      //           const comparisonPromises = valueArray.map(hashedValue => {
+      //             return bcrypt.compare(plaintextValue, hashedValue).then(isMatch => {
+      //               return isMatch ? hashedValue : null;
+      //             });
+      //           });
+      //           console.log('matching end');
+      //           // Once all comparisons are done
+      //           Promise.all(comparisonPromises)
+      //             .then(results => {
+      //               // Check if any matches are found
+      //               const matchingValue = results.find(value => value !== null);
+
+      //               if (matchingValue) {
+      //                 console.log('Token matches.');
+      //                 resolve(true);
+      //               } else {
+      //                 console.log('No matching token found.');
+      //                 resolve(false);
+      //               }
+      //             })
+      //             .catch(error => {
+      //               console.error('Error during comparison:', error);
+      //               reject(false);
+      //             });
+      //         } else {
+      //           console.log('No matching key found.');
+      //           resolve(false);
+      //         }
+      //       };
+      //     };
+
+      //     request.onupgradeneeded = event => {
+      //       const db = event.target.result;
+      //       if (!db.objectStoreNames.contains(storeName)) {
+      //         db.createObjectStore(storeName, { keyPath: 'key' });
+      //       }
+      //     };
+      //   });
+      // }
+      async function handleNavigation() {
+        const checkVal = await checkAndNavigate(
+          myKey,
+          // 'b37e85d9-0e89-443e-b867-297cac957f27',
+          dapptokens,
+          dbName,
+          storeName
+        );
+        console.log('checkVal:', checkVal);
+
+        if (result.isAuthenticated === true && checkVal) {
+          console.log('inside true');
+
+          navigate('/HomePage');
+        } else {
+          console.log('not register yet 2:', result.isAuthenticated);
+        }
       }
+
+      handleNavigation();
+
       // }
     });
-  }, []);
+  }, [a]);
+  const handlePasswordChange = event => {
+    setPassword(event.target.value);
+  };
 
   const handleLoginClick = async () => {
     const isMatch = await bcrypt.compare(password, storedPassword);
@@ -54,9 +143,8 @@ export default () => {
         // if(tokenExit){
         //   navigate('/HomePage');
         // }else{
-          navigate('/Permission');
+        navigate('/Permission');
         // }
-        
       } else {
         setErrorMessage('Incorrect password. Please try again.');
       }
